@@ -16,7 +16,7 @@ async def access():
             print(f'Error!: {e}')
         try:
             response = await client.from_("access").insert({}).execute()
-            print(f"La respuesta es:{response}")
+            # print(f"La respuesta es:{response}")
             return True
         except Exception as e:
             print(e)

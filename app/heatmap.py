@@ -347,6 +347,7 @@ def deploy_main_content():
     load_daily_analysis()
     load_monthly_analysis()
     tags["heatmap"]["db_content_search"] = tags["heatmap"]["db_content_daily"]
+    # Caso base
     staged = create_table_(tags["heatmap"]["db_content_daily"], "principalgroup", True)
     table = draw_table(staged, "principalgroup", True)
     dpg.configure_item(item=table, show=True)
