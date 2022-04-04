@@ -254,7 +254,12 @@ def load_portfolio():
     portfolio = []
     db_data = get_analysis()
     try:
-        for stock in [stock[0] for stock in (pd.read_csv(CSV_PATH,dtype={"cusip":"string"})).values.tolist()]:
+        for stock in [
+            stock[0]
+            for stock in (
+                pd.read_csv(CSV_PATH, dtype={"cusip": "string"})
+            ).values.tolist()
+        ]:
             for data in db_data:
                 if data["id_instrument"] == stock:
                     portfolio.append(data)
@@ -369,7 +374,9 @@ def search_tab(selection_callback):
     from FONTS import childs_font
 
     try:
-        tags["miscellaneous"]["portfolioweight"] = set([stock[0] for stock in (pd.read_csv(CSV_PATH)).values.tolist()])
+        tags["miscellaneous"]["portfolioweight"] = set(
+            [stock[0] for stock in (pd.read_csv(CSV_PATH)).values.tolist()]
+        )
     except Exception as _:
         tags["miscellaneous"]["portfolioweight"] = 0
     with dpg.mutex():
@@ -458,7 +465,9 @@ def on_selection(sender, unused, user_data):
     """Método para cerrar ventanas flotantes"""
     dpg.delete_item(user_data)
     try:
-        if tags["miscellaneous"]["portfolioweight"] != set([stock[0] for stock in (pd.read_csv(CSV_PATH)).values.tolist()]):
+        if tags["miscellaneous"]["portfolioweight"] != set(
+            [stock[0] for stock in (pd.read_csv(CSV_PATH)).values.tolist()]
+        ):
             thread = Thread(
                 target=load_portfolio,
             )
