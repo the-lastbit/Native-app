@@ -8,7 +8,12 @@ import asyncio
 from PIL import Image, ImageDraw, ImageFont
 from time import sleep
 from threading import Lock
-from app.miscellaneous import shift_the_group, show_update_window, TrendFactory, shift_other
+from app.miscellaneous import (
+    shift_the_group,
+    show_update_window,
+    TrendFactory,
+    shift_other,
+)
 
 
 class HeatMap:
@@ -296,8 +301,8 @@ def create_table_(data, group, filter: bool):
                         ][1],
                     )
                     # if group == "portfoliogroup":
-                        # some tooltip
-                                               
+                    # some tooltip
+
                     img_ticker = ImageTicker_(
                         company=stock["name"],
                         ticker=stock["symbol"],
@@ -373,7 +378,6 @@ def deploy_main_content():
     update = UpdateHeatmap()
     thread = Thread(target=update.run)
     thread.start()
-
 
 
 def tint(analysis):

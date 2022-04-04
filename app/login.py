@@ -47,13 +47,17 @@ def try_login():
 
 def server():
     from threading import Thread
+
     print()
     print("Local server UP!")
     print()
     deploy_web = DeployWeb()
     thread = Thread(target=deploy_web.run, args=(30,))
     thread.start()
-    dpg.set_value(item=tags["main"]["welcometext"],value="Es necesario renovar la sesión en el siguiente \nenlace: ")
+    dpg.set_value(
+        item=tags["main"]["welcometext"],
+        value="Es necesario renovar la sesión en el siguiente \nenlace: ",
+    )
     dpg.delete_item(item=tags["main"]["welcomebutton"])
     dpg.configure_item(item=tags["main"]["webpage"], show=True)
     hyperlink(
@@ -69,6 +73,6 @@ def server():
             dpg.show_item(item=tags["main"]["loadingscreen"])
             deploy_web.terminate()
             thread._delete()
-            print('Bienvenido')
+            print("Bienvenido")
             deploy_main_content()
             return False
