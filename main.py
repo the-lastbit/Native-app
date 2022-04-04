@@ -78,6 +78,7 @@ with dpg.window(
     no_collapse=True,
     no_move=False,
     autosize=True,
+    horizontal_scrollbar=False,
 ) as HeatView:
 
     with dpg.group(
@@ -162,22 +163,30 @@ with dpg.window(
         dpg.add_child_window(
             tag=tags["heatmap"]["principalgroup_"],
             parent=tags["heatmap"]["group"],
+            no_scrollbar=False,
+            horizontal_scrollbar=False,
             show=True,
         )
         dpg.add_child_window(
             tag=tags["heatmap"]["portfoliogroup_"],
             parent=tags["heatmap"]["group"],
+            no_scrollbar=False,
+            horizontal_scrollbar=False,
             show=False,
         )
         for group in groups:
             dpg.add_child_window(
                 tag=tags["heatmap"][f"{group}_"],
                 parent=tags["heatmap"]["group"],
+                no_scrollbar=False,
+                horizontal_scrollbar=False,
                 show=False,
             )
             dpg.add_child_window(
                 tag=tags["heatmap"][f"{group}__"],
                 parent=tags["heatmap"]["group"],
+                no_scrollbar=False,
+                horizontal_scrollbar=False,
                 show=False,
             )
             dpg.bind_item_theme(
@@ -241,12 +250,21 @@ dpg.bind_item_theme(
     theme=principal_window,
 )
 
+from os import getcwd, path
+from pathlib import Path
 
-dpg.create_viewport(title="HeatView", width=1280, height=720)
+CWD = getcwd()
+PATH = Path(CWD)
+
+CURRENT_PATH = Path(getcwd())
+ICON = "img/icons/icon.png"
+ICON_PATH = CURRENT_PATH / ICON
+
+dpg.create_viewport(title="HeatView")
 floating_window(tags["main"]["welcomescreen"], "Bienvenido")
 floating_window(tags["main"]["loadingscreen"], "Bienvenido")
-# dpg.set_viewport_small_icon("path/to/icon.ico")
-# dpg.set_viewport_large_icon("path/to/icon.ico")
+dpg.set_viewport_small_icon(ICON_PATH)
+dpg.set_viewport_large_icon(ICON_PATH)
 dpg.setup_dearpygui()
 dpg.show_viewport()
 dpg.start_dearpygui()

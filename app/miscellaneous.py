@@ -256,12 +256,8 @@ def load_portfolio():
     try:
         csvFile = pd.read_csv(CSV_PATH)
         for stock in csvFile.values.tolist():
-            print("paso 1")
             for data in db_data:
-                print("paso2")
-                print(data["id_instrument"],type(data["id_instrument"]), stock[0],type(stock[0]))
                 if data["id_instrument"] == str(stock[0]):
-                    print("paso3")
                     portfolio.append(data)
                     break
         group = "portfoliogroup"
@@ -340,7 +336,7 @@ class Loser(Trend):
         super().__init__(group, sign, key)
 
     def set_operation(self, filter):
-        return pandaraizer(filter).get("calculation").quantile(0.25)
+        return pandaraizer(filter).get("calculation").quantile(0.10)
 
 
 class Trending(Trend):
