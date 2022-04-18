@@ -58,34 +58,41 @@ class UpdateHeatmap:
 
         while self.up:
             self.heatmap.update()
-            if tags["heatmap"]["counter"] > 300:
+            if tags["heatmap"]["counter"] > 180:
                 tags["heatmap"]["counter"] = 0
                 load_monthly_analysis()
-                load_daily_analysis
-            elif tags["miscellaneous"]["counter"] > 6000:
+                load_daily_analysis()
+            elif tags["miscellaneous"]["counter"] > 360:
                 tags["miscellaneous"]["updatestate"] = True
                 tags["miscellaneous"]["counter"] = 0
 
-                if tags["miscellaneous"]["activegroup"] in groups:
-                    shift_the_group(tags["miscellaneous"]["activegroup"])
-                else:
-                    shift_other(tags["miscellaneous"]["activegroup"])
+                # if tags["miscellaneous"]["activegroup"] in groups:
+                #     shift_the_group(tags["miscellaneous"]["activegroup"])
+                # else:
+                #     shift_other(tags["miscellaneous"]["activegroup"])
 
                 for group in groups:
-                    trend = TrendFactory(group)
-                    function = trend.get_class()
-                    function.generate_table(filter=True)
 
-                    trend = TrendFactory(group)
-                    function = trend.get_class()
-                    function.generate_table(filter=False)
+                    trend0 = TrendFactory(group)
+                    function0 = trend0.get_class()
+                    thread0 = Thread(
+                        target=function0.generate_table(filter=True),
+                    )
+                    thread0.start()
+                    
+                    trend1 = TrendFactory(group)
+                    function1 = trend1.get_class()
+                    thread1 = Thread(
+                        target=function1.generate_table(filter=False),
+                    )
+                    thread1.start()
 
                 tags["miscellaneous"]["updatestate"] = False
-                dpg.configure_item(item=tags["miscellaneous"]["updating"], show=False)
-                if tags["miscellaneous"]["activegroup"] in groups:
-                    shift_the_group(tags["miscellaneous"]["activegroup"])
-                else:
-                    shift_other(tags["miscellaneous"]["activegroup"])
+                # dpg.configure_item(item=tags["miscellaneous"]["updating"], show=False)
+                # if tags["miscellaneous"]["activegroup"] in groups:
+                #     shift_the_group(tags["miscellaneous"]["activegroup"])
+                # else:
+                #     shift_other(tags["miscellaneous"]["activegroup"])
 
             else:
                 tags["heatmap"]["counter"] += 1

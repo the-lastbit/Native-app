@@ -10,6 +10,7 @@ from app.miscellaneous import (
     shift_other,
     floating_window,
     add_logo,
+    display_popup
 )
 
 
@@ -158,8 +159,9 @@ with dpg.window(
                 label="info",
                 parent=tags["heatmap"]["buttongroup"],
                 group=None,
-                callback=None,
+                callback=display_popup,
             )
+
         dpg.add_child_window(
             tag=tags["heatmap"]["principalgroup_"],
             parent=tags["heatmap"]["group"],
@@ -202,7 +204,7 @@ with dpg.window(
             parent=tags["heatmap"]["group"],
             show=False,
         ):
-            add_logo("updating", 900, 600, "update")
+            add_logo(logo_name="updating", width_=900, height_=600, tag="update")
 
       
     dpg.bind_item_theme(

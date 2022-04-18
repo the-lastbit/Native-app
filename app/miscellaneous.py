@@ -23,7 +23,7 @@ def add_logo(logo_name: str, width_: int, height_: int, tag: str):
     with dpg.texture_registry(show=False):
         dpg.add_static_texture(width, height, data, tag=tag)
     with dpg.drawlist(width=width_, height=height_):
-        dpg.draw_image(tag, [0, 0], [width_, height_])
+        dpg.draw_image(tag, [0, 0], [width_, height_])        
 
 
 def generate_img_button(
@@ -90,17 +90,17 @@ def calendar_button(
         )
 
 
-def reload_table():
-    group = tags["miscellaneous"]["activegroup"]
-    if tags["miscellaneous"]["state"]:
-        show = f"{group}_"
-        block = f"{group}__"
-    else:
-        show = f"{group}__"
-        block = f"{group}_"
+# def reload_table():
+#     group = tags["miscellaneous"]["activegroup"]
+#     if tags["miscellaneous"]["state"]:
+#         show = f"{group}_"
+#         block = f"{group}__"
+#     else:
+#         show = f"{group}__"
+#         block = f"{group}_"
 
-    dpg.configure_item(item=tags["heatmap"][show], show=True)
-    dpg.configure_item(item=tags["heatmap"][block], show=False)
+#     dpg.configure_item(item=tags["heatmap"][show], show=True)
+#     dpg.configure_item(item=tags["heatmap"][block], show=False)
 
 
 def change_state(sender, app_data, user_data):
@@ -114,11 +114,11 @@ def change_state(sender, app_data, user_data):
     calendar_button(
         tag=new_tag, path=path, label=path, parent=user_data, callback=change_state
     )
-    if (
-        tags["miscellaneous"]["activegroup"] in groups
-        and not tags["miscellaneous"]["updatestate"]
-    ):
-        reload_table()
+    # if (
+    #     tags["miscellaneous"]["activegroup"] in groups
+    #     and not tags["miscellaneous"]["updatestate"]
+    # ):
+    #     reload_table()
 
 
 def show_update_window():
@@ -139,26 +139,26 @@ def shift_the_group(group: str):
 
     tags["miscellaneous"]["activegroup"] = group
 
-    if tags["miscellaneous"]["updatestate"]:
-        show_update_window()
+    # if tags["miscellaneous"]["updatestate"]:
+    #     show_update_window()
+    # else:
+    if tags["miscellaneous"]["state"]:
+        trend = f"{group}_"
+        other = f"{group}__"
     else:
-        if tags["miscellaneous"]["state"]:
-            trend = f"{group}_"
-            other = f"{group}__"
+        trend = f"{group}__"
+        other = f"{group}_"
+
+    for group_ in groups:
+        if group == group_:
+            dpg.configure_item(item=tags["heatmap"][trend], show=True)
+            dpg.configure_item(item=tags["heatmap"][other], show=False)
         else:
-            trend = f"{group}__"
-            other = f"{group}_"
+            dpg.configure_item(item=tags["heatmap"][f"{group_}_"], show=False)
+            dpg.configure_item(item=tags["heatmap"][f"{group_}__"], show=False)
 
-        for group_ in groups:
-            if group == group_:
-                dpg.configure_item(item=tags["heatmap"][trend], show=True)
-                dpg.configure_item(item=tags["heatmap"][other], show=False)
-            else:
-                dpg.configure_item(item=tags["heatmap"][f"{group_}_"], show=False)
-                dpg.configure_item(item=tags["heatmap"][f"{group_}__"], show=False)
-
-        dpg.configure_item(item=tags["heatmap"]["principalgroup_"], show=False)
-        dpg.configure_item(item=tags["heatmap"]["portfoliogroup_"], show=False)
+    dpg.configure_item(item=tags["heatmap"]["principalgroup_"], show=False)
+    dpg.configure_item(item=tags["heatmap"]["portfoliogroup_"], show=False)
 
 
 def shift_other(group: str):
@@ -198,6 +198,27 @@ def show_portfolio(group=None):
             size=[28, 28],
         )
 
+def display_popup(group=None):
+    try:
+        dpg.delete_item("popup")
+        dpg.delete_item("info-")
+    except Exception as _:
+        pass
+    with dpg.mutex():
+        viewport_width = dpg.get_viewport_client_width()
+        viewport_height = dpg.get_viewport_client_height()
+
+        with dpg.window(
+            label="",tag="popup",popup=True, no_close=True, no_title_bar=True
+        ):
+            add_logo("info-", 472, 322, "info-")          
+
+    dpg.split_frame()
+    width = dpg.get_item_width("popup")
+    height = dpg.get_item_height("popup")
+    dpg.set_item_pos(
+        "popup", [100 , height + 50]
+    )
 
 def draw_table(staged_item, group, filter: bool):
     from THEME import table
@@ -473,7 +494,10 @@ def on_selection(sender, unused, user_data):
             )
             thread.start()
     except Exception as _:
-        pass
+        thread = Thread(
+            target=load_portfolio,
+        )
+        thread.start()
 
 
 def floating_window(window: int, Title: str):

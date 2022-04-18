@@ -123,6 +123,7 @@ tags = {
         "porfolioweight": int,
         "updating": 11111351,
         "updatestate": False,
+        "updateimage": 11111352,
     },
 }
 
