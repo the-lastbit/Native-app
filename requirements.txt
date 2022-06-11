@@ -9,7 +9,7 @@ flask-oidc==1.4.0
 h11==0.12.0
 httpcore==0.14.7
 httplib2==0.20.4
-httpx==0.22.0
+httpx==0.23.0
 idna==3.3
 importlib-metadata==4.11.4
 itsdangerous==2.0.1
