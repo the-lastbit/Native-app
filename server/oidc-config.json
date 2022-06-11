@@ -1,0 +1,13 @@
+{
+  "web": {
+    "client_id": "apache",
+    "client_secret": "o1saCXJFOYiC9waJEbVsTx2rQy3o469b",
+    "auth_uri": "https://auth3nt1c4t0r.herokuapp.com/auth/realms/master/protocol/openid-connect/auth",
+    "token_uri": "https://auth3nt1c4t0r.herokuapp.com/auth/realms/master/protocol/openid-connect/token",
+    "issuer": "https://auth3nt1c4t0r.herokuapp.com/auth/realms/master",
+    "userinfo_uri": "https://auth3nt1c4t0r.herokuapp.com/auth/realms/master/protocol/openid-connect/userinfo",
+    "redirect_uris": [
+      "http://localhost:8765/oidc/callback"
+    ]
+  }
+}

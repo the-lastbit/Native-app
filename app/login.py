@@ -11,7 +11,7 @@ from app.heatmap import deploy_main_content
 
 
 environ["FLASK_ENV"] = "server"
-environ["FLASK_RUN_PORT"] = "8000"
+environ["FLASK_RUN_PORT"] = "8765"
 
 
 def hyperlink(address):
@@ -61,7 +61,7 @@ def server():
     dpg.delete_item(item=tags["main"]["welcomebutton"])
     dpg.configure_item(item=tags["main"]["webpage"], show=True)
     hyperlink(
-        address="localhost:8000/",
+        address="localhost:8765/",
     )
     while True:
         response = asyncio.run(access())

@@ -37,7 +37,7 @@ with dpg.window(
         )
         with dpg.group(tag=tags["main"]["group"], horizontal=True):
             dpg.add_input_text(
-                default_value="http://127.0.0.1:8000/",
+                default_value="http://127.0.0.1:8765/",
                 readonly=True,
                 tag=tags["main"]["webpage"],
                 show=False,

@@ -9,6 +9,8 @@ Flask = "*"
 postgrest-py = "*"
 pillow = "*"
 pandas = "*"
+flask-oidc = "*"
+itsdangerous = "==2.0.1"
 
 [dev-packages]
 

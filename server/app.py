@@ -1,23 +1,27 @@
-from flask import Flask, render_template, request
+from flask import Flask, g
 from os import getcwd
 from config import conf
 
-PATH = f'{getcwd()}/config/config.ini'
 app = Flask(__name__)
+app.secret_key = "change_me"
+app.config["OIDC_CLIENT_SECRETS"] = f"{getcwd()}/server/oidc-config.json"
+app.config["OIDC_COOKIE_SECURE"] = False
+from flask_oidc import OpenIDConnect
 
-@app.route("/", methods=['POST','GET'])
-def home():
-    print(PATH)
-    if request.method == "GET":
-        AT = request.headers.get('Oidc-Access-Token')
-        if AT == None:
-            return render_template("index.html")
-        else:
-            conf.set_token(filename=PATH,new_token=AT)
-            return render_template("redirect.html")
-            # return f'{request.headers}'
+oidc = OpenIDConnect(app)
+
+PATH = f"{getcwd()}/config/config.ini"
+
+
+@app.route("/")
+@oidc.require_login
+def index():
+    if oidc.user_loggedin:
+        conf.set_token(filename=PATH, new_token=oidc.get_access_token())
+        return f"<h1>{'Autorizando acceso a %s' % oidc.user_getfield('preferred_username')}<h1>\n<h2>Puede cerrar esta ventana<h2>"
     else:
-        return render_template("index.html")
+        return "<h3>No ingresó un usuario correcto<h3>"
+
 
 def deploy():
-    app.run(host="127.0.0.1", port=8000, debug=False)
+    app.run(host="127.0.0.1", port=8765, debug=False)

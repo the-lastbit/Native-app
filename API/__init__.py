@@ -1,13 +1,15 @@
 import asyncio
-from postgrest_py import PostgrestClient
+from postgrest import PostgrestClient
 from os import getcwd
 from config import conf
 import json
 
 CONFIG_PATH = f"{getcwd()}/config/config.ini"
 
+URI =((conf.get_token(filename=CONFIG_PATH, section="URI"))['uri']) + ":3000/rpc"
+
 async def access():
-    async with PostgrestClient("http://localhost:3000/rpc") as client:
+    async with PostgrestClient(URI) as client:
         param = conf.get_token(filename=CONFIG_PATH)
         try:
             client.auth(token=param['access_token'])
@@ -23,7 +25,7 @@ async def access():
             return False
 
 async def obtain_range_data(data,symbol):
-    async with PostgrestClient("http://localhost:3000/rpc") as client:
+    async with PostgrestClient(URI) as client:
         param = conf.get_token(filename=CONFIG_PATH)
         try:
             client.auth(token=param['access_token'])
@@ -37,7 +39,7 @@ async def obtain_range_data(data,symbol):
             return None
 
 async def get_sentiment_analysis(function:str):
-    async with PostgrestClient("http://localhost:3000/rpc") as client:
+    async with PostgrestClient(URI) as client:
         param = conf.get_token(filename=CONFIG_PATH)
         try:
             client.auth(token=param['access_token'])
